@@ -39,17 +39,17 @@ function getCountryById($con,$id)
 
 function getCityById($con,$id)
 {
-    $sql="select * from city where id=$id";
+    $sql="select * from city where id='$id'";
     $result=mysqli_query($con,$sql);
-    $row= mysqli_num_rows($result);
+    //$row= mysqli_num_rows($result);
     $record="";
-    if($row>0)
-    {
+    //if($row>0)
+    //{
         $record= mysqli_fetch_assoc($result);
           
     return $record;
      
-    }
+    //}
   
 }
 
