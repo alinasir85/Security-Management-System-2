@@ -56,69 +56,8 @@ if(!($rows>0))
     function()
     {
         show();
-     
-        
-       $("#country").change(function(){
-           var cid=$("#country").val();
-           var data={"action":"city","cid":cid};
-           var settings={
-               type:"POST",
-               dataType:"json",
-               data:data,
-               url:"phpApi.php",
-               success:function(result){
-                   //alert(result);
-                   //console.log(result;  
-                   $("#city").empty();
-                   for(var i=0;i<result.length;i++)
-                   {
-                       var op="<option value='"+result[i].id+"'>"+result[i].name+"</option>";
-                       $("#city").append(op);
-                   }  
-               }
-           };
-           
-           $.ajax(settings);
-           return false;
-           
-       });
-  
-            
-       $(".edit").click(function(){
-           editFlag=1;
-           var id=$(this).val();
-           var data={"action":"editUser","id":id};
-           var settings={
-               type:"POST",
-               dataType:"json",
-               data:data,
-               url:"phpApi.php",
-               success:function(result){
-                   //alert(result);
-                   //console.log(result);
-          var login=$('#login').val(result.login);  
-          var password=$('#password').val(result.password);
-          var name=$('#name').val(result.name);
-          var email=$('#email').val(result.email);
-          var country=$('#country').val(result.countryid);
-          var city=$('#city').val(result.cityid);
-          if(result.isadmin==1)
-          {
-              var isadmin=$('#isadmin').prop("checked",true);
-          }
-          else
-          {
-              var isadmin=$('#isadmin').prop("checked",false);
-          }
-                  
-               }
-           };
-           
-           $.ajax(settings);
-           return false;
-           
-           
-       });
+
+       $("#country").change(fillCities);
        
        $("#save").click(function(){
            
@@ -221,6 +160,32 @@ if(!($rows>0))
       
     });
     
+    
+    function fillCities()
+    {
+        var cid=$("#country").val();
+           var data={"action":"city","cid":cid};
+           var settings={
+               type:"POST",
+               dataType:"json",
+               data:data,
+               url:"phpApi.php",
+               success:function(result){
+                   //alert(result);
+                   //console.log(result;  
+                   $("#city").empty();
+                   for(var i=0;i<result.length;i++)
+                   {
+                       var op="<option value='"+result[i].id+"'>"+result[i].name+"</option>";
+                       $("#city").append(op);
+                   }  
+               }
+           };
+           
+           $.ajax(settings);
+           return false;   
+    }
+    
     function deleteUser(id){
         var r = confirm('Do you want to remove it?');
         if (r) {
@@ -263,12 +228,14 @@ if(!($rows>0))
                success:function(result){
                    //alert(result);
                    //console.log(result);
-          var login=$('#login').val(result.login);  
-          var password=$('#password').val(result.password);
-          var name=$('#name').val(result.name);
-          var email=$('#email').val(result.email);
-          var country=$('#country').val(result.countryid);
-          var city=$('#city').val(result.cityid);
+         $('#login').val(result.login);  
+         $('#password').val(result.password);
+         $('#name').val(result.name);
+         $('#email').val(result.email);
+         $("#country").val(result.countryid);
+          fillCities();
+          console.log(result.cityid);
+         $("#city").val(result.cityid);
           if(result.isadmin==1)
           {
               var isadmin=$('#isadmin').prop("checked",true);
